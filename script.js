@@ -1,70 +1,142 @@
- // This is our API key. Add your own API key between the ""
- const APIKey = "5b0dd2de1698f33a10aab5e7e9eef4d2";
- const place = "Minneapolis, MN, US"
+// This is our API key. Add your own API key between the ""
+const APIKey = "5b0dd2de1698f33a10aab5e7e9eef4d2";
+var searchedLocations = [];
+let searchedLocation;
 
- let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + place + "&appid=" + APIKey;
+let long;
+let lat;
 
-      // We then created an AJAX call
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).then(function(response) {
+$("#searched-locations").on("keypress", function (event) {
+    if (event.key === 'Enter') {
+        searchedLocation = $("#searched-locations").val()
+        searchedLocations.push(searchedLocation);
+        
+        $(".time").empty();
+        $(".city").empty();
+        $(".wind").empty();
+        $(".humidity").empty();
+        $(".temp").empty();
+        $(".uv-index").empty();
 
-        // Create CODE HERE to Log the queryURL
-       
-        // Create CODE HERE to log the resulting object
-        console.log(response);
+        const place = searchedLocation
+
+        let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + place + "&appid=" + APIKey;
+        
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            //Calculation for locations time and date 
+            console.log(response);
+            let time = (response.timezone) / 3600;
+            let d = new Date();
+            let utc_offset = d.getTimezoneOffset();
+            d.setMinutes(d.getMinutes() + utc_offset);
+            let locationTime = time * 60;
+            d.setMinutes(d.getMinutes() + locationTime);
+            time = d;
+            time = moment(time).format("dddd, MMMM Do YYYY, h:mm a");
+
+            // weather icon 
+            currentIcon = response.weather[0].icon;
+            let currentWeatherIcon = "http://openweathermap.org/img/wn/" + currentIcon + "@2x.png"
+
+            //Calculation for location's weather
+            let Fahrenheit = Math.round((response.main.temp - 273) * 1.8 + 32);
+            Fahrenheit = Fahrenheit += String.fromCharCode(176) + "F";
+
+    
+            // cityNameIcon = `<p>${place}</p><img src="${currentWeatherIcon}"/>`
+            cityTime = $("<strong>").text("It is currently " + time);
+            windStat = $("<p>").text("The wind speed is " + response.wind.speed + " " + "Mph");
+            humidityStat = $("<p>").text("The humidity is " + response.main.humidity + String.fromCharCode(37));
+            tempStat = $("<p>").text("Temperature: " + Fahrenheit);
+
+            
+            // $(".city").append(cityNameIcon);
+            $(".time").append(cityTime);
+            $(".wind").append(windStat);
+            $(".humidity").append(humidityStat);
+            $(".temp").append(tempStat);
+
+            long = response.coord.lon;
+            lat = response.coord.lat;
+
+            //Call for UV index 
+            let uvURL = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + long;
+            $.ajax({
+                url: uvURL,
+                method: "GET"
+            }).then(function (uvResponse) {
+                console.log(uvResponse);
+
+                let uv = uvResponse.value;
+
+                //Setting UV Color Scheme 
+                if (uv < 3) {
+                    $(".uv-index").css({ "background-color": "yellow", "width": "20%" });
+                } else if (uv > 2 && uv < 6) {
+                    $(".uv-index").css({ "background-color": "yellow", "width": "20%" });
+                } else if (uv > 5 && uv < 8) {
+                    $(".uv-index").css({ "background-color": "yellow", "width": "20%" });
+                } else if (uv > 7 && uv < 11) {
+                    $(".uv-index").css({ "background-color": "yellow", "width": "20%" });
+                } else if (uv > 10) {
+                    $(".uv-index").css({ "background-color": "yellow", "width": "20%" });
+                }
+
+                locationUv = $("<strong>").text("UV Index: " + uv);
+                $(".uv-index").append(locationUv);
+            });
+
+            let queryURLFiveDays = "https://api.openweathermap.org/data/2.5/forecast?q=" + place + "&appid=" + APIKey;
+
+            APIKey
 
 
-        //For converting timezones ----> https://www.youtube.com/watch?v=UT2dP447roo
-        let time = (response.timezone)/3600;
-        let Fahrenheit = Math.round((response.main.temp - 273) * 1.8 + 32);
-        Fahrenheit = Fahrenheit += String.fromCharCode(176) + "F";
-        console.log(Fahrenheit)
-      
+            $.ajax({
+                url: queryURLFiveDays,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response);
+                let day1Date = response.list[2].dt_txt
+                day1Date = moment(day1Date).format("MM/D/YYYY")
+                day1Temp = response.list[2].main.temp
+                day1Humd = response.list[2].main.humidity
+                day1Icon = response.list[2].weather[0].icon
+                let currentWeatherIcon = "http://openweathermap.org/img/wn/" + day1Icon + "@2x.png"
+
+                let day1TempFah = Math.round((response.list[2].main.temp - 273) * 1.8 + 32);
+                day1TempFah = day1TempFah += String.fromCharCode(176) + "F";
+                cardHtml = `<div style="width: 125px; background-color: #aacee0; text-align: center; padding: 1em; border-radius: 20px; margin: 10px;">
+                        <h5>${day1Date}</h5>
+                        <img src="${currentWeatherIcon}"/>
+                        <p>Temp: ${day1TempFah}</p>
+                        <p>Humidty ${day1Humd}%</p>
+                  </div>`
+                $('#5Day').append(cardHtml);
+                
+            });
 
 
-        cityTime = $("<strong>").text("And the time is " + time);
-        cityName = $("<p>").text("It's Always Sunny In " + place);
-        windStat = $("<p>").text("The wind speed is " + response.wind.speed + " " + "Mph");
-        humidityStat = $("<p>").text("The humidity is " + response.main.humidity + String.fromCharCode(37));
-        tempStat = $("<p>").text("Temperature: " + Fahrenheit);
 
-        $(".time").append(cityTime); 
-        $(".city").append(cityName); 
-        $(".wind").append(windStat);
-        $(".humidity").append(humidityStat);
-        $(".temp").append(tempStat); 
+            function previousSearched() {
+                $(".list-group").empty();
 
-      });
+                for (let i = 0; i < searchedLocations.length; i++) {
+                    var a = $("<button>");
+                    // Adding a class of movie-btn to our button
+                    a.addClass("Prev Searched Button");
+                    // Adding a data-attribute
+                    a.attr("data-name", searchedLocations[i]);
+                    // Providing the initial button text
+                    a.text(searchedLocations[i]);
+                    // Adding the button to the buttons-view div
+                    $(".list-group").append(a);
+                }
+            }
+            previousSearched();
+        })
+    }
+});
 
- let queryURLFiveDays = "https://api.openweathermap.org/data/2.5/forecast?q=" + place + "&appid=" + APIKey;
-
- // We then created an AJAX call
- $.ajax({
-   url: queryURLFiveDays,
-   method: "GET"
- }).then(function(response) {
-
-   // Create CODE HERE to Log the queryURL
-   // Create CODE HERE to log the resulting object
-   console.log(response);
-   // Create CODE HERE to calculate the temperature (converted from Kelvin)
-//    console.log(response.main.temp)
-//    var Fahrenheit = (response.main.temp - 273.15) * 1.80 + 32;
-//    console.log(Fahrenheit)
-//    // Create CODE HERE to transfer content to HTML
-
-//    // Hint: To convert from Kelvin to Fahrenheit: F = (K - 273.15) * 1.80 + 32
-//    // Create CODE HERE to dump the temperature content into HTML
-//    cityName = $("<p>").text("It's Always Sunny In " + place);
-// //    windStat = $("<p>").text("The wind speed is " + response.wind.speed);
-// // //    humidityStat = $("<p>").text("The humidity is " + response.main.humidity);
-// //    tempStat = $("<p>").text("The temperature in Fahrenheit is " + Fahrenheit);
-
-//    $(".city").append(cityName); 
-// //    $(".wind").append(windStat);
-// //    $(".humidity").append(humidityStat);
-// //    $(".temp").append(tempStat); 
-
- });

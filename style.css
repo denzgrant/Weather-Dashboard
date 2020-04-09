@@ -10,7 +10,25 @@ input[type=text] {
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
   }
-  
+  .col-4 {
+      background-color:#0624330c;
+  }
+  button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    outline-style: solid;
+    outline-color: #205975;
+    opacity: 0.8;
+    width: 55%;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    margin-top: 1em;
+}
+button:hover {
+  background-color: #aacee0;
+  color: #ffffff;
+}
   /* When the input field gets focus, change its width to 100% */
   input[type=text]:focus {
     width: 32%;
