@@ -46,7 +46,7 @@ $("#searched-locations").on("keypress", function (event) {
             Fahrenheit = Fahrenheit += String.fromCharCode(176) + "F";
 
     
-            // cityNameIcon = `<p>${place}</p><img src="${currentWeatherIcon}"/>`
+            cityNameIcon = `<p>${place}</p><img src="${currentWeatherIcon}"/>`
             cityTime = $("<strong>").text("It is currently " + time);
             windStat = $("<p>").text("The wind speed is " + response.wind.speed + " " + "Mph");
             humidityStat = $("<p>").text("The humidity is " + response.main.humidity + String.fromCharCode(37));
@@ -91,30 +91,63 @@ $("#searched-locations").on("keypress", function (event) {
 
             let queryURLFiveDays = "https://api.openweathermap.org/data/2.5/forecast?q=" + place + "&appid=" + APIKey;
 
-            APIKey
 
-
+            //Adding 5 Day Forcast Buttons 
             $.ajax({
                 url: queryURLFiveDays,
                 method: "GET"
             }).then(function (response) {
                 console.log(response);
-                let day1Date = response.list[2].dt_txt
+                let day1Date = response.list[5].dt_txt
                 day1Date = moment(day1Date).format("MM/D/YYYY")
-                day1Temp = response.list[2].main.temp
-                day1Humd = response.list[2].main.humidity
-                day1Icon = response.list[2].weather[0].icon
+                day1Temp = response.list[5].main.temp
+                day1Humd = response.list[5].main.humidity
+                day1Icon = response.list[5].weather[0].icon
                 let currentWeatherIcon = "http://openweathermap.org/img/wn/" + day1Icon + "@2x.png"
 
-                let day1TempFah = Math.round((response.list[2].main.temp - 273) * 1.8 + 32);
+                let day1TempFah = Math.round((response.list[5].main.temp - 273.15) * 1.8 + 32);
                 day1TempFah = day1TempFah += String.fromCharCode(176) + "F";
-                cardHtml = `<div style="width: 125px; background-color: #aacee0; text-align: center; padding: 1em; border-radius: 20px; margin: 10px;">
+                cardHtml1 = `<div style="width: 125px; background-color: #aacee0; text-align: center; padding: 1em; border-radius: 20px; margin: 10px;">
                         <h5>${day1Date}</h5>
                         <img src="${currentWeatherIcon}"/>
                         <p>Temp: ${day1TempFah}</p>
                         <p>Humidty ${day1Humd}%</p>
                   </div>`
-                $('#5Day').append(cardHtml);
+                $('#5Day').append(cardHtml1);
+                //day 2 
+                let day2Date = response.list[6].dt_txt
+                day2Date = moment(day2Date).format("MM/D/YYYY")
+                day2Temp = response.list[6].main.temp
+                day2Humd = response.list[6].main.humidity
+                day2Icon = response.list[6].weather[0].icon
+                let currentWeatherIcon2 = "http://openweathermap.org/img/wn/" + day2Icon + "@2x.png"
+
+                let day2TempFah = Math.round((response.list[6].main.temp - 273) * 1.8 + 32);
+                day2TempFah = day2TempFah += String.fromCharCode(176) + "F";
+                cardHtml2 = `<div style="width: 125px; background-color: #aacee0; text-align: center; padding: 1em; border-radius: 20px; margin: 10px;">
+                        <h5>${day2Date}</h5>
+                        <img src="${currentWeatherIcon2}"/>
+                        <p>Temp: ${day2TempFah}</p>
+                        <p>Humidty ${day2Humd}%</p>
+                  </div>`
+                $('#5Day').append(cardHtml2);
+                //Day 3 
+                let day3Date = response.list[21].dt_txt
+                day3Date = moment(day3Date).format("MM/D/YYYY")
+                day3Temp = response.list[21].main.temp
+                day3Humd = response.list[21].main.humidity
+                day3Icon = response.list[21].weather[0].icon
+                let currentWeatherIcon3 = "http://openweathermap.org/img/wn/" + day3Icon + "@2x.png"
+
+                let day3TempFah = Math.round((response.list[21].main.temp - 273) * 1.8 + 32);
+                day3TempFah = day3TempFah += String.fromCharCode(176) + "F";
+                cardHtml3 = `<div style="width: 125px; background-color: #aacee0; text-align: center; padding: 1em; border-radius: 20px; margin: 10px;">
+                        <h5>${day3Date}</h5>
+                        <img src="${currentWeatherIcon3}"/>
+                        <p>Temp: ${day3TempFah}</p>
+                        <p>Humidty ${day3Humd}%</p>
+                  </div>`
+                $('#5Day').append(cardHtml3);
                 
             });
 
