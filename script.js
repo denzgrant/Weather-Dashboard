@@ -132,11 +132,12 @@ function displayCurrentWeather(place) {
             url: queryURLFiveDays,
             method: "GET",
         }).then(function (response) {
+            console.log(response); 
             let day1Date = response.list[2].dt_txt;
             day1Date = moment(day1Date).format("MM/D/YYYY");
             day1Temp = response.list[2].main.temp;
             day1Humd = response.list[2].main.humidity;
-            day1Icon = response.list[6].weather[0].icon;
+            day1Icon = response.list[2].weather[0].icon;
             let currentWeatherIcon =
                 "http://openweathermap.org/img/wn/" + day1Icon + "@2x.png";
 
@@ -156,7 +157,7 @@ function displayCurrentWeather(place) {
             day2Date = moment(day2Date).format("MM/D/YYYY");
             day2Temp = response.list[10].main.temp;
             day2Humd = response.list[10].main.humidity;
-            day2Icon = response.list[14].weather[0].icon;
+            day2Icon = response.list[10].weather[0].icon;
             let currentWeatherIcon2 =
                 "http://openweathermap.org/img/wn/" + day2Icon + "@2x.png";
 
@@ -176,7 +177,7 @@ function displayCurrentWeather(place) {
             day3Date = moment(day3Date).format("MM/D/YYYY");
             day3Temp = response.list[18].main.temp;
             day3Humd = response.list[18].main.humidity;
-            day3Icon = response.list[22].weather[0].icon;
+            day3Icon = response.list[18].weather[0].icon;
             let currentWeatherIcon3 =
                 "http://openweathermap.org/img/wn/" + day3Icon + "@2x.png";
 
@@ -197,7 +198,7 @@ function displayCurrentWeather(place) {
             day4Date = moment(day4Date).format("MM/D/YYYY");
             day4Temp = response.list[26].main.temp;
             day4Humd = response.list[26].main.humidity;
-            day4Icon = response.list[30].weather[0].icon;
+            day4Icon = response.list[26].weather[0].icon;
             let currentWeatherIcon4 =
                 "http://openweathermap.org/img/wn/" + day4Icon + "@2x.png";
 
@@ -218,7 +219,7 @@ function displayCurrentWeather(place) {
             day5Date = moment(day5Date).format("MM/D/YYYY");
             day5Temp = response.list[34].main.temp;
             day5Humd = response.list[34].main.humidity;
-            day5Icon = response.list[38].weather[0].icon;
+            day5Icon = response.list[34].weather[0].icon;
             let currentWeatherIcon5 =
                 "http://openweathermap.org/img/wn/" + day5Icon + "@2x.png";
 
