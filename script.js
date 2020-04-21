@@ -5,15 +5,22 @@ var searchedLocations = [];
 let long;
 let lat;
 
-(function loadCity() {
-    let cityString = localStorage.getItem("Locations");
-    
-    searchedLocations = (cityString) ? JSON.parse(cityString) : [];
-    if(searchedLocations.length > 0){
-    displayCurrentWeather(searchedLocations[1]);
-    }
+//Clear Previous Searched Buttons 
+$(".clear").click(function () {
+    $(".list-group").empty();
+    localStorage.clear();
+    searchedLocations = [];
+});
 
-}()); 
+loadcity = () => {
+    let cityString = localStorage.getItem("Locations");
+
+    searchedLocations = (cityString) ? JSON.parse(cityString) : []; 
+    if (searchedLocations.length > 0) {
+        displayCurrentWeather(searchedLocations[1]);
+    }
+}; 
+loadcity(); 
 
 $("#searched-locations").on("keypress", function (event) {
     if (event.key === "Enter") {
@@ -231,7 +238,12 @@ function displayCurrentWeather(place) {
         var weatherBtn = $("#searched-locations").val();
         if (!searchedLocations.includes(weatherBtn)) {
             searchedLocations.push(weatherBtn);
-            localStorage.setItem("Locations", JSON.stringify(searchedLocations));
+            let filteredLocations = searchedLocations.filter(function (a){
+                return a != ''; 
+            });
+            console.log(filteredLocations); 
+            localStorage.setItem("Locations", JSON.stringify(filteredLocations));
+            searchedLocations = filteredLocations; 
         }
         previousSearched();
     });
