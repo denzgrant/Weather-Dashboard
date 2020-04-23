@@ -88,5 +88,5 @@ function get5DayData(){
         });
 
         $("#5Day").append(html);
-    
-}
+      
+})}  
