@@ -77,7 +77,7 @@ queryAPIs = (place) => {
         method: "GET",
     }).then((response) => {
         $.ajax({
-            url: `http://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
+            url: `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
             method: "GET",
         }).then((uvResponse) => {
             showCurrentCity(response, uvResponse);
@@ -99,7 +99,7 @@ show5Day = (response) => {
         if (timeIndex.includes(index)){
             html += `<div class="card5Day row">
                 <h5>${moment(day.dt_txt).format("MM/D/YYYY")}</h5>
-                <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
+                <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
                 <p>Temp: ${getFTemp(day.main.temp)}</p>
                 <p>Humidty ${day.main.humidity}%</p>
             </div>`
@@ -125,7 +125,7 @@ showButtons = () => {
 showCurrentCity = (city, uv) => {
     $("#current-forecast").empty();
 
-    let currentWeatherIcon = `http://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png`;
+    let currentWeatherIcon = `https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png`;
     let html = `<div class="card-body">
             <h5 class="card-title justify-content:center city"><p>${city.name} <img src="${currentWeatherIcon}"/></p></h5>
             <div class="time"><strong>It is currently ${getCurrentTime(city)}</strong></div>
