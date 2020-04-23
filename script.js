@@ -3,10 +3,15 @@ var searchedLocations = [];
 let long;
 let lat;
 
+
+$('#fdh').hide();
+
+
 $(".clear").click(function () {
     $(".list-group").empty();
     $("#5Day").empty();
     $("#current-forecast").empty();
+    $('#fdh').hide(); 
     localStorage.clear();
     searchedLocations = [];
 });
@@ -19,6 +24,9 @@ $(".list-group").on("click", ".weather-btn", (e) =>{
 $("#searched-locations").on("keypress", function (event) {
     if (event.key === "Enter") {
         queryAPIs($("#searched-locations").val());
+        $('#fdh').show(); 
+        $('#current-forecast').show();
+       
     }
 });
 
@@ -58,6 +66,7 @@ loadcity = () => {
     let cityString = localStorage.getItem("Locations");
     searchedLocations = (cityString) ? JSON.parse(cityString) : []; 
     queryAPIs(searchedLocations[0]);
+    
 }; 
 
 queryAPIs = (place) => {
@@ -86,7 +95,6 @@ show5Day = (response) => {
     const timeIndex = [2,10, 18, 26, 34];
     let html = '';
     $("#5Day").empty();
-    header = `<h4>Here is your Five Day Forecast:</h4>`
     response.list.forEach((day, index) => {
         if (timeIndex.includes(index)){
             html += `<div class="card5Day row">
@@ -98,7 +106,7 @@ show5Day = (response) => {
         }
     });
 
-    $("#5Day").append(header + html);
+    $("#5Day").append(html);
     
 };
 
