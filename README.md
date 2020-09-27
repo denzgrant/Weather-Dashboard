@@ -1,6 +1,7 @@
 
-  <h1>Weather Dashboard </h1>
+  <h1>Weather Dashboard :sun_with_face:</h1>
   <p>Weather Dashboard allows the user to get the current and 5-Day forecast for any location by typing in the city's name. Technologies uses: jQuery, Moment.js, and server-side APIs. </p>
+   <strong>Demo:https://denzgrant.github.io/Weather-Dashboard/</strong>
    <img src="WeatherDashboard.gif" alt="demogif">  
   <h2>Table of Contents</h2>
   <ul> 
