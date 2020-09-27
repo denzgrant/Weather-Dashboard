@@ -1,6 +1,7 @@
 
   <h1>Weather Dashboard </h1>
-  <p> </p>
+  <p>Weather Dashboard allows the user to get the current and 5-Day forecast for any location by typing in the city's name. Technologies uses: jQuery, Moment.js, and server-side APIs. </p>
+   <img src="/public/assets/css/eat_da_burger.gif" alt="demogif">  
   <h2>Table of Contents</h2>
   <ul> 
    <li><a href="#Installation">Installation</a></li> 
